@@ -34,16 +34,18 @@ class ChangeController extends Controller
 
         while ($i < $str_length) {
             $char = $str[$i];
-
+            // first check the start of a number
             if (is_numeric($char)) {
+                // store the number by looping on its digits and making sure we don't get out of the total string size
                 $temp_nb = '';
                 while ($i < $str_length and is_numeric($char)) {
                     $temp_nb = $temp_nb . $char;
                     $i += 1;
                     if($i < $str_length)$char = $str[$i];
-                }
+                }// when the whole number is stored in $temp_nb add it to the result as a binary
                 $res = $res . decbin($temp_nb);
-            } else {
+
+            } else { //whenever we don't have a number add it to the result directly
                 $res = $res . $char;
                 $i += 1;
             }
