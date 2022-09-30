@@ -6,11 +6,17 @@ class ChangeController extends Controller
 {
     public function sortString($str)
     {
+        // create associative arrays to contain lower, upper, numbers
+        // lower ascii codes with how many times it is repeated
         $lower = array();
+        // lower ascii codes for upper letters( to compare with lower) with how many times it is repeated
         $upper = array();
+        // array of numbers to sort them independently
         $numbers = array();
+        // result, empty by default
         $res = '';
 
+        // loop through the string and divide elements in three different categories (arrays): lower, upper and numbers
         for ($i = 0; $i < strlen($str); $i++) {
             $char = $str[$i];
             if (is_numeric($char)) {
@@ -23,8 +29,10 @@ class ChangeController extends Controller
                 empty($lower[$lower_ascii]) ? $lower[$lower_ascii] = 1 : $lower[$lower_ascii] += 1;
             }
         }
+        // sort numbers array
         sort($numbers);
 
+        // until both lower and upper arrays are totally empty compare and add chars retreived from ascii code to the result
         while ($lower or $upper) {
             $lower ? $min_lower = min(array_keys($lower)) : $min_lower = 1000;
             $upper ? $min_upper = min(array_keys($upper)) : $min_upper = 1000;
@@ -40,8 +48,14 @@ class ChangeController extends Controller
             }
         }
 
-        foreach($numbers as $num) $res.=$num;
-        return $res;
+        // finally add numbers to the result after finishing both lower and upper
+        foreach ($numbers as $num) $res .= $num;
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => $res,
+            ]
+        );
     }
 
     public function splitNumber($num)
@@ -88,7 +102,12 @@ class ChangeController extends Controller
                 $i += 1;
             }
         }
-        return $res;
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => $res
+            ]
+        );
     }
 
     public function calculateExpression($exp)
@@ -125,6 +144,11 @@ class ChangeController extends Controller
             }
         }
 
-        return $res;
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => $res
+            ]
+        );
     }
 }
