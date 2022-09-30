@@ -8,9 +8,21 @@ class ChangeController extends Controller
     {
         return $str;
     }
-    public function splitNumber($nb)
+    public function splitNumber($num)
     {
-        return $nb;
+        $res = [];
+        $numlength = strlen((string)$num);
+        for ($i = 0; $i < $numlength; $i++) {
+            $diff = $num % 10;
+            $num = floor($num / 10);
+            $res[] = $diff * (10 ** $i);
+        }
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => array_reverse($res)
+            ]
+        );
     }
     public function translateToBinary($str)
     {
@@ -20,6 +32,4 @@ class ChangeController extends Controller
     {
         return $exp;
     }
-
-
 }
