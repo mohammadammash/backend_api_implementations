@@ -13,10 +13,14 @@ class ChangeController extends Controller
     {
         $res = [];
         $numlength = strlen((string)$num);
+        // iterate as much as the length of the string
         for ($i = 0; $i < $numlength; $i++) {
-            $diff = $num % 10;
+            //for each iteration take the remainder
+            $rem = $num % 10;
+            // update num to exclude last char
             $num = floor($num / 10);
-            $res[] = $diff * (10 ** $i);
+            // add the remainder multiplied by 10 and '$i' as number with respect to the end of the number 
+            $res[] = $rem * (10 ** $i);
         }
         return response()->json(
             [
