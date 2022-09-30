@@ -8,4 +8,18 @@ class ChangeController extends Controller
     {
         return $str;
     }
+    public function splitNumber($nb)
+    {
+        return $nb;
+    }
+    public function translateToBinary($str)
+    {
+        return $str;
+    }
+    public function calculateExpression($exp)
+    {
+        return $exp;
+    }
+
+
 }
