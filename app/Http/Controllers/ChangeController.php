@@ -24,10 +24,32 @@ class ChangeController extends Controller
             ]
         );
     }
+
     public function translateToBinary($str)
     {
-        return $str;
+        $res = '';
+        $str_length = strlen($str);
+        $i = 0;
+
+        while ($i < $str_length) {
+            $char = $str[$i];
+
+            if (is_numeric($char)) {
+                $temp_nb = '';
+                while (is_numeric($char) and $i < $str_length) {
+                    $char = $str[$i];
+                    $temp_nb = $temp_nb . $char;
+                    $i += 1;
+                }
+                $res = $res . decbin($temp_nb);
+            } else {
+                $res = $res . $char;
+                $i += 1;
+            }
+        }
+        return $res;
     }
+
     public function calculateExpression($exp)
     {
         return $exp;
