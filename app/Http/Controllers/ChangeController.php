@@ -6,7 +6,42 @@ class ChangeController extends Controller
 {
     public function sortString($str)
     {
-        return $str;
+        $lower = array();
+        $upper = array();
+        $numbers = array();
+        $res = '';
+
+        for ($i = 0; $i < strlen($str); $i++) {
+            $char = $str[$i];
+            if (is_numeric($char)) {
+                $numbers[] = $char;
+            } else if (ctype_upper($char)) {
+                $lower_ascii = ord(strtolower($char));
+                empty($upper[$lower_ascii]) ? $upper[$lower_ascii] = 1 : $upper[$lower_ascii] += 1;
+            } else if (ctype_lower($char)) {
+                $lower_ascii = ord($char);
+                empty($lower[$lower_ascii]) ? $lower[$lower_ascii] = 1 : $lower[$lower_ascii] += 1;
+            }
+        }
+        sort($numbers);
+
+        while ($lower or $upper) {
+            $lower ? $min_lower = min(array_keys($lower)) : $min_lower = 1000;
+            $upper ? $min_upper = min(array_keys($upper)) : $min_upper = 1000;
+
+            if ($min_lower <= $min_upper) {
+                $lower_char = chr($min_lower);
+                for ($i = 0; $i < $lower[$min_lower]; $i++) $res .= $lower_char;
+                unset($lower[$min_lower]);
+            } else {
+                $upper_char = chr($min_upper);
+                for ($i = 0; $i < $upper[$min_upper]; $i++) $res .= strtoupper($upper_char);
+                unset($upper[$min_upper]);
+            }
+        }
+
+        foreach($numbers as $num) $res.=$num;
+        return $res;
     }
 
     public function splitNumber($num)
@@ -45,10 +80,9 @@ class ChangeController extends Controller
                 while ($i < $str_length and is_numeric($char)) {
                     $temp_nb = $temp_nb . $char;
                     $i += 1;
-                    if($i < $str_length)$char = $str[$i];
-                }// when the whole number is stored in $temp_nb add it to the result as a binary
+                    if ($i < $str_length) $char = $str[$i];
+                } // when the whole number is stored in $temp_nb add it to the result as a binary
                 $res = $res . decbin($temp_nb);
-
             } else { //whenever we don't have a number add it to the result directly
                 $res = $res . $char;
                 $i += 1;
