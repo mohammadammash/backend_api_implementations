@@ -8,6 +8,7 @@ class ChangeController extends Controller
     {
         return $str;
     }
+
     public function splitNumber($num)
     {
         $res = [];
@@ -52,6 +53,38 @@ class ChangeController extends Controller
 
     public function calculateExpression($exp)
     {
-        return $exp;
+        // consider first char as an operator
+        $operator = $exp[0];
+        // divide numbers by a space as an array elements
+        $numbers = explode(' ', substr($exp, 2));
+        $res = 0;
+        // get the total count of numbers
+        $num_length = count($numbers);
+        //validating
+        if($num_length === 0) return $res;
+        else if ($num_length === 1) return $numbers[0];
+        else $res = $numbers[0];
+
+        for ($i = 1; $i < count($numbers); $i++) {
+            $num = $numbers[$i];
+            // checking the operator for each number and affecting the whol result
+            switch ($operator) {
+                case '+':
+                    $res += $num;
+                    break;
+                case '-':
+                    $res -= $num;
+                    break;
+                case '*':
+                    $res *= $num;
+                    break;
+                // in case of '/' it would be considered  TRAILING SLASH to indicate a directory
+                // case '/':
+                //     $res /= $num;
+                //     break;
+            }
+        }
+
+        return $res;
     }
 }
